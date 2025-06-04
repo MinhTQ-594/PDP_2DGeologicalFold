@@ -3,12 +3,12 @@
 #include <math.h>
 #include <string.h>
 
-#define NX 10
-#define NY 10
-#define Blocksize 5
+#define NX 15
+#define NY 15
 #define INF 1e9
 #define MAX_ITER 1000
 #define F 1.0
+#define dx 1.0
 
 #define INDEX(i, j) ((i) * NY + (j))
 
@@ -22,7 +22,7 @@ double update(double* T, int i, int j) {
 
     double diff = fabs(tx - ty);
     if (diff >= 1.0 / F) return fmin(tx, ty) + 1.0 / F;
-    else return (tx + ty + sqrt(2.0 / (F * F) - diff * diff)) / 2.0;
+    else return (tx + ty + sqrt(2.0*dx*dx / (F * F) - diff * diff)) / 2.0;
 }
 
 void print_T(double* T) {

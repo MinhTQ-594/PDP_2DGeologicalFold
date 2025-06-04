@@ -4,7 +4,7 @@
 
 #define NX 10
 #define NY 10
-#define Blocksize 5
+#define Blocksize 2 // block dim, số thread trong mỗi block
 #define SDX (NX / Blocksize)
 #define SDY (NY / Blocksize)
 #define INF 1e9
@@ -43,8 +43,8 @@ __global__ void init_source(double* T, int* isSource, int* active) {
 }
 
 __global__ void compute_subdomains(double* T, int* isSource, int* active, int* new_active, int* any_change) {
-    int sx = blockIdx.x;
-    int sy = threadIdx.x;
+    int sx = blockIdx.x;    // block_id
+    int sy = threadIdx.x;    // thread_id trong block
     int idx = sx * SDY + sy;
     if (!active[idx]) return;
 
@@ -52,6 +52,7 @@ __global__ void compute_subdomains(double* T, int* isSource, int* active, int* n
     int j0 = sy * Blocksize;
     int changed = 0;
 
+    // cập nhật các giá trị trong một block active
     for (int i = i0; i < i0 + Blocksize && i < NX; i++) {
         for (int j = j0; j < j0 + Blocksize && j < NY; j++) {
             if (isSource[INDEX(i, j)]) continue;
@@ -65,6 +66,7 @@ __global__ void compute_subdomains(double* T, int* isSource, int* active, int* n
         }
     }
 
+    // Nếu có thay đổi, đánh dấu các subdomain lân cận là active
     if (changed) {
         *any_change = 1;
         for (int dx = -1; dx <= 1; dx++) {
@@ -91,7 +93,7 @@ int main() {
     double* cpu_T = (double*)malloc(sizeof(double) * NX * NY);
     int* cpu_isSource = (int*)calloc(NX * NY, sizeof(int));
 
-    // Đặt source tại (0, 0)
+    // Đặt source tại (NX/2, NY/2) - tâm lưới
     int cx = NX / 2;
     int cy = NY / 2;
     cpu_isSource[INDEX(cx, cy)] = 1;
