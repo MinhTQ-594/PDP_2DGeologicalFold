@@ -48,7 +48,7 @@ int fast_sweeping() {
     while (iter++ < MAX_ITER) {
         double max_diff = 0;
 
-        int dirs[4][2] = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}}; //, {-1, 1}, {-1, -1}, {1, -1}
+        int dirs[4][2] = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 
         for (int d = 0; d < 4; d++) {
             int di = dirs[d][0];
