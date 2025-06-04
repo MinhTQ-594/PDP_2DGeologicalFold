@@ -1,1 +1,5 @@
 /2D Static Hamilton-Jacobi equations for simulations of geological folds - Parallel solutions.pdf
+*.exe
+.vscode
+_FS_nhat.*
+_LAS_nhat.*
