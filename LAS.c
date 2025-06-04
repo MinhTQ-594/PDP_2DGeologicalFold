@@ -6,9 +6,6 @@
 #define NX 10
 #define NY 10
 #define Blocksize 5
-#define SDX (NX / Blocksize)
-#define SDY (NY / Blocksize)
-#define TOL 1e-4
 #define INF 1e9
 #define MAX_ITER 1000
 #define F 1.0
@@ -39,9 +36,7 @@ void print_T(double* T) {
 
 int main() {
     double* T = (double*)malloc(sizeof(double) * NX * NY);
-    int* isSource = (int*)calloc(NX * NY, sizeof(int)); // Mảng cờ nguồn khởi tạo tất cả các giá trị = 0
-    // int* active = (int*)calloc(SDX * SDY, sizeof(int));
-    // int* new_active = (int*)calloc(SDX * SDY, sizeof(int));
+    int* isSource = (int*)calloc(NX * NY, sizeof(int)); // Mảng cờ nguồn khởi tạo tất cả các giá trị = 0 - đánh dấu các điểm nguồn
 
     // Khởi tạo T và điểm nguồn tại giữa lưới
     for (int i = 0; i < NX * NY; i++) T[i] = INF;
@@ -55,12 +50,6 @@ int main() {
         for (int j = 0; j < NY; j++) {
             if (!isSource[INDEX(i, j)])
                 T[INDEX(i, j)] = INF;
-
-            // int sx = i / Blocksize;
-            // int sy = j / Blocksize;
-            // if (sx < SDX && sy < SDY) {
-            //     active[sx * SDY + sy] = 1;
-            // }
         }
     }
 
